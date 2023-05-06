@@ -1,0 +1,22 @@
+# Funcion que se queda ejecutandose hasta que se pulsa la tecla espacio
+function Wait-Spacebar
+{
+
+    $tecla = [ConsoleKey]::Spacebar
+
+	$detectarTecla = @'
+	[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] 
+	public static extern short GetAsyncKeyState(int virtualKeyCode); 
+	'@
+    
+	Add-Type -MemberDefinition $detectarTecla -Name Keyboard -Namespace PsOneApi
+
+	do
+	{
+		  $pulsado = [bool]([PsOneApi.Keyboard]::GetAsyncKeyState($tecla) -eq -32767)
+		  Write-Host -Object 'Pulsado la barra espaciadora' -ForegroundColor Yellow -BackgroundColor Black
+	} while(!$pulsado)
+	
+}
+
+Wait-Spacebar

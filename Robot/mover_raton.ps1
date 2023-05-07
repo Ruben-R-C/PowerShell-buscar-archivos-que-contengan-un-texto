@@ -1,9 +1,12 @@
 ﻿
 # Funcion que mueve el raton derecho/izquierta 50px hasta que se pulsa el espacio
-function main
+function mover-raton-hacer-click-hasta-pulsar-espacio
 {
 	importarFuncionGetAsyncKeyState
 	importar-System-Windows-Forms
+	Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void mouse_event(int flags, int dx, int dy, int cButtons, int info);' -Name U32 -Namespace W;
+
+
 	$contador = 0
 
 	do
@@ -18,6 +21,7 @@ function main
 		if ( $contador -eq 80 )
 		{
 			Start-Sleep -Milliseconds 150
+			[W.U32]::mouse_event(6,0,0,0,0); #pulsar boton izquierdo
 		}
 		
 		if (  ($contador -gt 80) -and ($contador -lt 160) )
@@ -28,6 +32,7 @@ function main
 		if (  $contador -eq 160 )
 		{
 			Start-Sleep -Milliseconds 150
+			[W.U32]::mouse_event(6,0,0,0,0); #pulsar boton izquierdo
 			$contador = -1
 		}
 		
@@ -81,7 +86,7 @@ function mover-raton-arriba-izquierda
     [Windows.Forms.Cursor]::Position = $POSITION
 }
 
-main
+mover-raton-hacer-click-hasta-pulsar-espacio
 
 
 

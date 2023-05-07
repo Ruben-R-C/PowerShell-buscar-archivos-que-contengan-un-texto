@@ -1,0 +1,31 @@
+# Funcion que muestra mensaje cada dos segundos hasta que se pulsa la tecla espacio
+function Wait-Spacebar
+{
+
+    $tecla = [ConsoleKey]::Spacebar
+
+	$detectarTecla = @'
+	[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] 
+	public static extern short GetAsyncKeyState(int virtualKeyCode); 
+	'@
+    
+	Add-Type -MemberDefinition $detectarTecla -Name Keyboard -Namespace PsOneApi
+
+	$contador = 0
+
+	do
+	{
+		$pulsado = [bool]([PsOneApi.Keyboard]::GetAsyncKeyState($tecla) -eq -32767)
+		if ( 20 -eq $contador )
+		{
+			Write-Output "Mensaje cada dos segundos"
+			$contador = 0
+		}
+		Start-Sleep -Milliseconds 100
+		$contador += 1
+		
+	} while(!$pulsado)
+	
+}
+
+Wait-Spacebar

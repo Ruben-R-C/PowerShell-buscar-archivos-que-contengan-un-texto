@@ -14,6 +14,7 @@ function Wait-Spacebar
 	do
 	{
 		  $pulsado = [bool]([PsOneApi.Keyboard]::GetAsyncKeyState($tecla) -eq -32767)
+		  Start-Sleep -Milliseconds 100
 		  Write-Host -Object 'Pulsado la barra espaciadora' -ForegroundColor Yellow -BackgroundColor Black
 	} while(!$pulsado)
 	
